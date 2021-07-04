@@ -4,7 +4,6 @@ import 'package:flutter_dev/color.dart';
 import 'package:flutter_dev/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -25,6 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: LoginScreen(),
+      //home: WeatherScreen(),
     );
   }
 }

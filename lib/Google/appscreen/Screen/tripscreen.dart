@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dev/Google/appscreen/Componets/triplist.dart';
 import 'package:flutter_dev/Google/appscreen/Screen/appscreen.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TripScreen extends StatelessWidget {
   @override
@@ -37,31 +38,58 @@ class TripScreen extends StatelessWidget {
           ),
         ),
         MyList1(),
-        Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 290,
-                height: 50,
-                child: RaisedButton(
-                  padding: EdgeInsets.symmetric(vertical: 8,horizontal: 30),
-                  onPressed: (){
-                    Navigator.pop(context);
-            MaterialPageRoute route =
-                MaterialPageRoute(builder: (value) => DataTrip1());
-            Navigator.push(context, route);
-            },
-                color: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30))),
-                  child: Text(
-                    'ข้อมูลแนะนำในทริปเที่ยว ที่ 1',
-                    style: TextStyle(color: Colors.white,fontSize: 20,fontFamily: 'Trirong'),
-                  ),
-                ),
-              )
-            ],
-          ),
+        Row(
+          children: [
+            SizedBox(width: 20),
+            Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 290,
+                    height: 50,
+                    child: RaisedButton(
+                      padding: EdgeInsets.symmetric(vertical: 8,horizontal: 30),
+                      onPressed: (){
+                        Navigator.pop(context);
+                MaterialPageRoute route =
+                    MaterialPageRoute(builder: (value) => DataTrip1());
+                Navigator.push(context, route);
+                },
+                    color: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Text(
+                        'ข้อมูลแนะนำในทริปเที่ยว ที่ 1',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontFamily: 'Trirong'),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(width: 10),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 70,
+                    height: 50,
+                    child: RaisedButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                MaterialPageRoute route =
+                    MaterialPageRoute(builder: (value) => Tripmap1());
+                Navigator.push(context, route);
+                },
+                    color: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Icon(MdiIcons.googleMaps,size: 30,color: Colors.white),
+                    ),
+                  )
+                ],
+              ),
+          ],
+        ),
         Padding(
           padding: const EdgeInsets.all(20),
           child: Text(
@@ -70,31 +98,118 @@ class TripScreen extends StatelessWidget {
           ),
         ),
         MyList2(),
-       Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 290,
-                height: 50,
-                child: RaisedButton(
-                  padding: EdgeInsets.symmetric(vertical: 8,horizontal: 30),
-                  onPressed: (){
-                    Navigator.pop(context);
-            MaterialPageRoute route =
-                MaterialPageRoute(builder: (value) => DataTrip2());
-            Navigator.push(context, route);
-                  },
-                color: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30))),
-                  child: Text(
-                    'ข้อมูลแนะนำในทริปเที่ยว ที่ 2',
-                    style: TextStyle(color: Colors.white,fontSize: 20,fontFamily: 'Trirong'),
-                  ),
-                ),
+        Row(
+          children: [
+            SizedBox(width: 20),
+            Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 290,
+                    height: 50,
+                    child: RaisedButton(
+                      padding: EdgeInsets.symmetric(vertical: 8,horizontal: 30),
+                      onPressed: (){
+                        Navigator.pop(context);
+                MaterialPageRoute route =
+                    MaterialPageRoute(builder: (value) => DataTrip2());
+                Navigator.push(context, route);
+                },
+                    color: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Text(
+                        'ข้อมูลแนะนำในทริปเที่ยว ที่ 2',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontFamily: 'Trirong'),
+                      ),
+                    ),
+                  )
+                ],
               ),
-            ], 
+              SizedBox(width: 10),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 70,
+                    height: 50,
+                    child: RaisedButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                MaterialPageRoute route =
+                    MaterialPageRoute(builder: (value) => Tripmap2());
+                Navigator.push(context, route);
+                },
+                    color: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Icon(MdiIcons.googleMaps,size: 30,color: Colors.white),
+                    ),
+                  )
+                ],
+              ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Text(
+            'ทริปที่ 3 ',
+            style: TextStyle(fontFamily: 'Sriracha',fontSize: 20,fontWeight: FontWeight.bold),
           ),
+        ),
+        MyList3(),
+        Row(
+          children: [
+            SizedBox(width: 20),
+            Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 290,
+                    height: 50,
+                    child: RaisedButton(
+                      padding: EdgeInsets.symmetric(vertical: 8,horizontal: 30),
+                      onPressed: (){
+                        Navigator.pop(context);
+                MaterialPageRoute route =
+                    MaterialPageRoute(builder: (value) => DataTrip3());
+                Navigator.push(context, route);
+                },
+                    color: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Text(
+                        'ข้อมูลแนะนำในทริปเที่ยว ที่ 3',
+                        style: TextStyle(color: Colors.white,fontSize: 20,fontFamily: 'Trirong'),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(width: 10),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 70,
+                    height: 50,
+                    child: RaisedButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                MaterialPageRoute route =
+                    MaterialPageRoute(builder: (value) => Tripmap3());
+                Navigator.push(context, route);
+                },
+                    color: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Icon(MdiIcons.googleMaps,size: 30,color: Colors.white),
+                    ),
+                  )
+                ],
+              ),
+          ],
+        ),
           Divider(),
       ],
     ), 

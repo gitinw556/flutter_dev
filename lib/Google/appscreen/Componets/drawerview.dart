@@ -89,7 +89,7 @@ class DrawerView extends StatelessWidget {
             },
             child: ListTile(
               title: Text(
-                'Search for place',
+                'Place category',
                 style: TextStyle(fontSize: 17),
               ),
               leading: Icon(MdiIcons.imageSearchOutline, size: 30),
@@ -129,21 +129,21 @@ class DrawerView extends StatelessWidget {
               leading: Icon(Icons.map_outlined, size: 30),
             ),
           ),
-          InkWell(
-            onTap: () {
-              Navigator.pop(context);
-              MaterialPageRoute route =
-                  MaterialPageRoute(builder: (value) => WeatherScreen());
-              Navigator.push(context, route);
-            },
-            child: ListTile(
-              title: Text(
-                'Check Weather',
-                style: TextStyle(fontSize: 17),
-              ),
-              leading: Icon(MdiIcons.weatherPouring, size: 30),
-            ),
-          ),
+          // InkWell(
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     MaterialPageRoute route =
+          //         MaterialPageRoute(builder: (value) => WeatherScreen());
+          //     Navigator.push(context, route);
+          //   },
+          //   child: ListTile(
+          //     title: Text(
+          //       'Check Weather',
+          //       style: TextStyle(fontSize: 17),
+          //     ),
+          //     leading: Icon(MdiIcons.weatherPouring, size: 30),
+          //   ),
+          // ),
           Divider(color: Colors.black),
           InkWell(
             onTap: () async {

@@ -22,8 +22,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   Future<WeatherInfo> fetchWeather() async {
     final apiKey = "6e2891d596a99b34e36106ec4cdd7bc9";
+    // final requestUri =
+    //     "https://api.openweathermap.org/data/2.5/weather?q=Chiang%20Mai&units=imperial&appid=6e2891d596a99b34e36106ec4cdd7bc9";
     final requestUri =
-        "https://api.openweathermap.org/data/2.5/weather?q=Chiang%20Mai&units=imperial&appid=6e2891d596a99b34e36106ec4cdd7bc9";
+        "https://api.openweathermap.org/data/2.5/weather?lat=18.802374213048118&lon=98.921627839317&units=imperial&appid=6e2891d596a99b34e36106ec4cdd7bc9";
     final response = await http.get(Uri.parse(requestUri));
     if (response.statusCode == 200) {
       return WeatherInfo.fromJson(jsonDecode(response.body));
@@ -101,8 +103,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         fontWeight: FontWeight.w600),
                   ),
                 ),
-                Text('30'+'\u00B0',
-                  //Text("${temp != null ? temp.toString()+ '\u00B0':"Loading"}",
+                //Text('30'+'\u00B0',
+                  Text("${temp != null ? temp.toString()+ '\u00B0':"Loading"}",
                   //Text(temp != null ? temp.toString() + '\u00B0' : "Loading",
                   style: TextStyle(
                     color: Colors.white,

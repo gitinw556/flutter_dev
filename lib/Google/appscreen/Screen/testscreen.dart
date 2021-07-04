@@ -7,6 +7,8 @@ import 'package:flutter_dev/Google/appscreen/Screen/appscreen.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TestScreen extends StatefulWidget {
   @override
@@ -41,7 +43,8 @@ class _TestScreenState extends State<TestScreen> with TravelDataMixin {
   @override
   void initState() {
     super.initState();
-    travelData.forEach((element) {
+    List<TravelData> travelData_new = onTimefunction();
+    travelData_new.forEach((element) {
       allMarkers.add(Marker(
         markerId: MarkerId(element.name),
         draggable: false,
@@ -52,12 +55,13 @@ class _TestScreenState extends State<TestScreen> with TravelDataMixin {
     });
     pageController = PageController(initialPage: 1, viewportFraction: 0.8) //;
       ..addListener(onScroll);
+
 ////////////////////////////////////////////////////////////////////////////////////////
-  //   _addMarker(LatLng(_originLatitude, _originLongitude), "origin",
-  //       BitmapDescriptor.defaultMarker);
-  //   _addMarker(LatLng(_destLatitude, _destLongitude), "dest",
-  //       BitmapDescriptor.defaultMarkerWithHue(90));
-  //   _getPolyline();
+    //   _addMarker(LatLng(_originLatitude, _originLongitude), "origin",
+    //       BitmapDescriptor.defaultMarker);
+    //   _addMarker(LatLng(_destLatitude, _destLongitude), "dest",
+    //       BitmapDescriptor.defaultMarkerWithHue(90));
+    //   _getPolyline();
   }
 
   // _addMarker(LatLng position, String id, BitmapDescriptor descriptor) {
@@ -88,7 +92,21 @@ class _TestScreenState extends State<TestScreen> with TravelDataMixin {
   //   polylines[id] = polyline;
   //   setState(() {});
   // }
-  
+
+  onTimefunction() {
+    //int time_int = 16;
+    int time_int = DateTime.now().hour;
+    List<TravelData> new_travelData = [];
+
+    for (var value in travelData) {
+      if ((value.starttime < time_int) & (value.endtime > time_int)) {
+        new_travelData.add(value);
+      }
+    }
+    // print("hiiii");
+    // print(new_travelData.toString());
+    return new_travelData;
+  }
 
 //////////////////////////////////////////////////////////////////////////////
   void onScroll() {
@@ -191,47 +209,6 @@ class _TestScreenState extends State<TestScreen> with TravelDataMixin {
     );
   }
 
-//////////////   Zoom plus and minus  //////////////////////////
-  // double zoomVal = 5.0;
-  Widget _zoomminusfunction() {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: IconButton(
-        icon: Icon(FontAwesomeIcons.searchMinus, color: Colors.blue[900]),
-        onPressed: () {
-          zoomVal--;
-          _minus(zoomVal);
-        },
-      ),
-    );
-  }
-
-  Widget _zoomplusfunction() {
-    return Align(
-      alignment: Alignment.topRight,
-      child: IconButton(
-        icon: Icon(FontAwesomeIcons.searchPlus, color: Colors.blue[900]),
-        onPressed: () {
-          zoomVal++;
-          _plus(zoomVal);
-        },
-      ),
-    );
-  }
-
-  Future<void> _minus(double zoomVal) async {
-    // final GoogleMapController controller = await controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(18.721722552349245, 98.96312918926081), zoom: zoomVal)));
-  }
-
-  Future<void> _plus(double zoomVal) async {
-    // final GoogleMapController controller = await controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(18.721722552349245, 98.96312918926081), zoom: zoomVal)));
-  }
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-
 //////////   MoveCamera   ///////////////////////////////
 
   moveCamera() {
@@ -242,14 +219,27 @@ class _TestScreenState extends State<TestScreen> with TravelDataMixin {
       tilt: 45.0,
     )));
   }
-////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////
+  //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //key: _scaffoldKey,
       appBar: AppBar(
-          elevation: 0.1,
+          elevation: 4.0,
           backgroundColor: Colors.lightBlue[700],
+          actions: <Widget>[
+            IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  MaterialPageRoute route =
+                      MaterialPageRoute(builder: (value) => DrawerRight());
+                  Navigator.push(context, route);
+                  //_scaffoldKey.currentState.openEndDrawer();
+                },
+                icon: Icon(MdiIcons.weatherPouring)),
+          ],
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -264,6 +254,7 @@ class _TestScreenState extends State<TestScreen> with TravelDataMixin {
                   fontFamily: 'FredokaOne',
                   fontSize: 25,
                   color: Colors.white))),
+      //endDrawer: DrawerRight(),
       body: Stack(
         children: <Widget>[
           Container(
@@ -276,13 +267,13 @@ class _TestScreenState extends State<TestScreen> with TravelDataMixin {
                   zoom: 12.0),
               markers: Set.from(allMarkers),
               onMapCreated: mapCreated,
-        //       myLocationEnabled: true,
-        // tiltGesturesEnabled: true,
-        // compassEnabled: true,
-        // scrollGesturesEnabled: true,
-        // zoomGesturesEnabled: true,
-        // polylines: Set<Polyline>.of(polylines.values),
-        //markers: Set<Marker>.of(markers.values),
+              //       myLocationEnabled: true,
+              // tiltGesturesEnabled: true,
+              // compassEnabled: true,
+              // scrollGesturesEnabled: true,
+              // zoomGesturesEnabled: true,
+              // polylines: Set<Polyline>.of(polylines.values),
+              //markers: Set<Marker>.of(markers.values),
             ),
           ),
           Positioned(
@@ -299,18 +290,444 @@ class _TestScreenState extends State<TestScreen> with TravelDataMixin {
               ),
             ),
           ),
-          
-          _zoomminusfunction(),
-          _zoomplusfunction(),
         ],
       ),
     );
   }
 }
 
-Marker myMarker = Marker(
-  markerId: MarkerId('Here'),
-  position: LatLng(18.721786155200835, 98.96306134869909),
-  infoWindow: InfoWindow(title: 'ตำแหน่งของฉัน'),
-  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-);
+// Marker myMarker = Marker(
+//   markerId: MarkerId('Here'),
+//   position: LatLng(18.721786155200835, 98.96306134869909),
+//   infoWindow: InfoWindow(title: 'ตำแหน่งของฉัน'),
+//   icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+// );
+
+class DrawerRight extends StatefulWidget {
+  //const DrawerRight({ Key? key }) : super(key: key);
+  @override
+  _DrawerRightState createState() => _DrawerRightState();
+}
+
+class _DrawerRightState extends State<DrawerRight> with TravelDataMixin {
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width * 0.6;
+    return Scaffold(
+      appBar: AppBar(
+          elevation: 4.0,
+          backgroundColor: Colors.lightBlue[700],
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+              MaterialPageRoute route =
+                  MaterialPageRoute(builder: (value) => TestScreen());
+              Navigator.push(context, route);
+            },
+          ),
+          title: Text('      Check Weather',
+              style: TextStyle(
+                  fontFamily: 'FredokaOne',
+                  fontSize: 25,
+                  color: Colors.white))),
+      body: ListView.builder(
+        itemCount: travelData.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              showDialogFunc(context, travelData[index]);
+            },
+            child: Card(
+                child: Row(
+              children: <Widget>[
+                Container(
+                  width: 120,
+                  height: 120,
+                  child:
+                      Image.asset(travelData[index].photo, fit: BoxFit.cover),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        travelData[index].name,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        width: width,
+                        child: Text(
+                          travelData[index].address,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: width,
+                        child: Text(
+                          travelData[index].clock,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: width,
+                        child: Text(
+                          travelData[index].day,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )),
+          );
+        },
+      ),
+    );
+  }
+}
+
+showDialogFunc(context, TravelDataMixin) {
+  var now = DateTime.now();
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: Material(
+            type: MaterialType.transparency,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+              padding: EdgeInsets.all(5),
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: 530,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      TravelDataMixin.weatherphoto,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(0.0, 1.0),
+                    child: SizedBox(
+                      height: 10,
+                      width: 10,
+                      child: OverflowBox(
+                        minWidth: 0,
+                        maxWidth: MediaQuery.of(context).size.width,
+                        minHeight: 0,
+                        maxHeight: (MediaQuery.of(context).size.height / 2.5),
+                        child: Stack(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              width: double.infinity,
+                              height: double.infinity,
+                              child: Card(
+                                color: Colors.white,
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                          top: 15, left: 20, right: 20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Center(
+                                            child: Text(
+                                              TravelDataMixin.name,
+                                              style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 24,
+                                                fontFamily: 'Sriracha',
+                                              ),
+                                            ),
+                                          ),
+                                          Center(
+                                            child: Text(
+                                              DateFormat()
+                                                  .add_yMMMMEEEEd()
+                                                  .format(DateTime.now()),
+                                              style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Divider(color: Colors.black),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          padding: EdgeInsets.only(left: 30),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Container(
+                                                width: 120,
+                                                height: 120,
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: AssetImage(
+                                                        TravelDataMixin
+                                                            .weathericon),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                  'เวลา ${now.hour} : ${now.minute} น.',
+                                                  style: TextStyle(
+                                                    color: Colors.black87,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'Trirong',
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(right: 30),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text(
+                                                TravelDataMixin.weatherstate,
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontFamily: 'Trirong',
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Text(
+                                                TravelDataMixin.weathertemp +
+                                                    '\u2103',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 35,
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Text(
+                                                'max ${TravelDataMixin.weathermax+'\u2103'+' / '+'min '+TravelDataMixin.weathermin+'\u2103'}',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 173),
+                  Align(
+                    alignment: Alignment(0.0, 1.0),
+                    child: SizedBox(
+                      height: 10,
+                      width: 10,
+                      child: OverflowBox(
+                        minWidth: 0,
+                        maxWidth: MediaQuery.of(context).size.width,
+                        minHeight: 0,
+                        maxHeight: (MediaQuery.of(context).size.height / 7),
+                        child: Stack(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              width: double.infinity,
+                              height: double.infinity,
+                              child: Card(
+                                color: Colors.grey[50],
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 75,
+                                      width: 115,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.grey,
+                                            style: BorderStyle.solid,
+                                            width: 1.0),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          SizedBox(height: 10),
+                                          Container(
+                                            width: 30,
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    'assets/weather/humidity.png'),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Container(
+                                            child: Text(
+                                              TravelDataMixin.weatherhum,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: 'Trirong',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 3),
+                                    Container(
+                                      height: 75,
+                                      width: 115,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.grey,
+                                            style: BorderStyle.solid,
+                                            width: 1.0),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          SizedBox(height: 10),
+                                          Container(
+                                            width: 30,
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    'assets/weather/chance.png'),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Container(
+                                            child: Text(
+                                              TravelDataMixin.weatherchance,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: 'Trirong',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 3),
+                                    Container(
+                                      height: 75,
+                                      width: 115,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.grey,
+                                            style: BorderStyle.solid,
+                                            width: 1.0),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          SizedBox(height: 10),
+                                          Container(
+                                            width: 30,
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    'assets/weather/wind.png'),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Container(
+                                            child: Text(
+                                              TravelDataMixin.weatherwind,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: 'Trirong',
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      });
+}
